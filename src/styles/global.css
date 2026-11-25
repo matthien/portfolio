@@ -218,7 +218,7 @@ html.menu-open {
   }
 }
 
-/* Simple page stack used by About, Contact, Thoughtscape, case studies */
+/* Simple page stack used by Thoughtscape and case studies */
 .page {
   display: flex;
   flex-direction: column;

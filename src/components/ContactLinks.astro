@@ -1,0 +1,62 @@
+---
+import { social } from '../data/social';
+
+interface Props {
+  variant: 'sidebar' | 'menu';
+}
+
+const { variant } = Astro.props;
+---
+
+<nav aria-label="Contact">
+  <ul class:list={['contact', variant]} role="list">
+    {
+      social.map((link) => (
+        <li>
+          <a
+            class="contact-link t-link"
+            href={link.href}
+            target={link.external ? '_blank' : undefined}
+            rel={link.external ? 'noopener noreferrer' : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .contact {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    gap: var(--space-1);
+  }
+
+  .menu {
+    gap: 0;
+  }
+
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--muted);
+  }
+
+  .sidebar .contact-link {
+    height: var(--nav-row);
+  }
+
+  .menu .contact-link {
+    height: var(--nav-row-mobile);
+    font-size: var(--size-mobile-link);
+  }
+
+  .contact-link:hover {
+    color: var(--ink);
+  }
+</style>

@@ -1,12 +1,207 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { experience, photos } from '../data/experience';
+
+const paragraphs = [
+  'As a child, I was fascinated by computers. My family got our first computer when I was eight years old. Driven by curiosity, I spent my time after school finding new games and chasing anything the internet would show me next. Little did I know at the time, this curiosity was training my design eye for my passion: making complicated things easier to understand.',
+  'Present day me and me from three years ago are two completely different people. But one thing has stayed the same all throughout time, I love making the lives of people around me easier. Giving is loving.',
+  'Currently based in NYC. Always open to a good conversation.',
+];
+
+const placeholderCount = 8;
+
+/*
+ * Rendered width of one photo:
+ * - 1204px and up, beside the text: (100vw - 300 sidebar - 48 padding - 400 text - 96 gap - 16 grid gap) / 2
+ * - 900px to 1203px, below the text: (100vw - 348 - 16) / 2
+ * - mobile: (100vw - 32 padding - 8 grid gap) / 2
+ */
+const photoSizes =
+  '(width >= 1204px) calc((100vw - 860px) / 2), (width >= 900px) calc((100vw - 364px) / 2), calc((100vw - 40px) / 2)';
 ---
 
-<BaseLayout title="About" description="About Matt Thien, product designer.">
-  <section class="page">
-    <h1 class="t-title">About</h1>
-    <div class="prose">
-      <p>[About copy: your background, how you work, what you are looking for next]</p>
+<BaseLayout title="About" description="About Matt Thien, product designer." compactMobileTop>
+  <h1 class="visually-hidden">About</h1>
+
+  <div class="about">
+    <div class="row">
+      <div class="text">
+        <div class="paragraphs">
+          {paragraphs.map((paragraph) => <p class="t-body">{paragraph}</p>)}
+        </div>
+
+        <h2 class="visually-hidden">Experience</h2>
+        <ul class="experience" role="list">
+          {
+            experience.map((item) => (
+              <li class="job t-body">
+                <time class="muted" datetime={String(item.year)}>
+                  {item.year}
+                </time>
+                <span class="what">
+                  <span class="org">{item.organization}</span>
+                  <span class="role muted">{item.role}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      {
+        photos.length > 0 ? (
+          <div class="photos">
+            {photos.map((photo) => (
+              <div class="photo">
+                <Image
+                  src={photo.src}
+                  alt={photo.alt}
+                  widths={[320, 480, 640, 960]}
+                  sizes={photoSizes}
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div class="photos" aria-hidden="true">
+            {Array.from({ length: placeholderCount }, () => (
+              <div class="photo" />
+            ))}
+          </div>
+        )
+      }
     </div>
-  </section>
+  </div>
 </BaseLayout>
+
+<style>
+  .about {
+    container: about / inline-size;
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    column-gap: var(--space-9);
+    row-gap: var(--space-8);
+  }
+
+  /* Text column: stays in view while the photos scroll past */
+  .text {
+    position: sticky;
+    top: var(--space-6);
+    flex: 0 1 var(--about-text);
+    min-width: var(--about-text-min);
+  }
+
+  .paragraphs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--blank-line);
+  }
+
+  .experience {
+    margin-top: var(--space-8);
+  }
+
+  .job {
+    display: grid;
+    grid-template-columns: var(--year-col) minmax(0, 1fr) auto;
+    column-gap: var(--exp-col-gap);
+    align-items: baseline;
+    min-height: var(--space-5);
+  }
+
+  /* On desktop, organization and role are their own grid columns */
+  .what {
+    display: contents;
+  }
+
+  .role {
+    text-align: right;
+  }
+
+  /* Photo column: fills the rest of the row, ending at the page margin */
+  .photos {
+    flex: 1 1 var(--about-photos-min);
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+
+  .photo {
+    aspect-ratio: 1 / 1;
+    background: var(--media-placeholder);
+    border-radius: var(--radius-none);
+    overflow: hidden;
+  }
+
+  .photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /*
+   * The photos wrap below the text once the row is narrower than
+   * text (400) + gap (96) + photos minimum (360) = 856px.
+   * The text column stops being sticky then.
+   */
+  @container about (width < 856px) {
+    .text {
+      position: static;
+    }
+  }
+
+  @media (width < 900px) {
+    .row {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: stretch;
+      gap: var(--space-5);
+    }
+
+    .text {
+      position: static;
+      flex: none;
+      min-width: 0;
+    }
+
+    .paragraphs {
+      gap: var(--blank-line-mobile);
+    }
+
+    .experience {
+      margin-top: var(--space-5);
+    }
+
+    /* Year | organization, with the role always on the line under the organization */
+    .job {
+      grid-template-columns: var(--year-col) minmax(0, 1fr);
+      min-height: 0;
+      padding-block: var(--exp-row-pad-mobile);
+    }
+
+    .what {
+      display: block;
+    }
+
+    .org,
+    .role {
+      display: block;
+    }
+
+    .role {
+      text-align: left;
+    }
+
+    .photos {
+      flex: none;
+      gap: var(--space-2);
+    }
+  }
+</style>

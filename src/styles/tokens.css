@@ -45,6 +45,8 @@
   --space-5: 32px;
   --space-6: 40px;
   --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
 
   /* Radius */
   --radius-none: 0;
@@ -63,6 +65,14 @@
   --content-max: 720px;
   --prose-max: 480px;
   --label-col: 120px;
+
+  /* About page */
+  --about-text: 400px;
+  --about-text-min: 280px;
+  --about-photos-min: 360px;
+  --year-col: 44px;
+  --exp-col-gap: 12px;
+  --exp-row-pad-mobile: 6px;
 
   /* Media */
   --aspect-desktop: 1.41;

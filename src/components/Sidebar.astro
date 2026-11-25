@@ -1,6 +1,7 @@
 ---
 import { site } from '../lib/site';
 import Bio from './Bio.astro';
+import ContactLinks from './ContactLinks.astro';
 import NavLinks from './NavLinks.astro';
 
 interface Props {
@@ -18,6 +19,9 @@ const { pathname } = Astro.props;
   <div class="nav-wrap">
     <NavLinks pathname={pathname} variant="sidebar" />
   </div>
+  <div class="contact-wrap">
+    <ContactLinks variant="sidebar" />
+  </div>
   <p class="footer t-mono muted">{site.footer}</p>
 </aside>
 
@@ -32,6 +36,8 @@ const { pathname } = Astro.props;
     width: var(--sidebar-width);
     height: 100vh;
     padding: var(--space-6) var(--space-4);
+    /* On a short window, scroll instead of letting the link groups collide */
+    overflow-y: auto;
   }
 
   .bio-wrap {
@@ -40,10 +46,17 @@ const { pathname } = Astro.props;
 
   .nav-wrap {
     margin-top: var(--space-5);
+    /* Minimum space between the two link groups when the window is short */
+    margin-bottom: var(--space-5);
+  }
+
+  /* Pushes the contact links and copyright to the bottom */
+  .contact-wrap {
+    margin-top: auto;
   }
 
   .footer {
-    margin-top: auto;
+    margin-top: var(--space-5);
   }
 
   @media (width < 900px) {

@@ -26,7 +26,7 @@ src/
   lib/site.ts            # name, bio, footer, nav items
   styles/tokens.css      # colors, type, spacing, motion tokens
   styles/global.css      # reset, text styles (.t-*), .media, .prose, .page
-  pages/                 # /, /work/[slug], /about, /contact, /thoughtscape
+  pages/                 # /, /work/[slug], /about, /thoughtscape (/contact redirects to /)
 ```
 
 Desktop is 900px and up; mobile is below 900px.

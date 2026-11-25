@@ -1,5 +1,6 @@
 ---
 import { site } from '../lib/site';
+import ContactLinks from './ContactLinks.astro';
 import NavLinks from './NavLinks.astro';
 
 interface Props {
@@ -28,6 +29,9 @@ const { pathname } = Astro.props;
   <div class="links">
     <NavLinks pathname={pathname} variant="menu" />
   </div>
+  <div class="contact-wrap">
+    <ContactLinks variant="menu" />
+  </div>
   <p class="footer t-mono muted">{site.footer}</p>
 </div>
 
@@ -45,7 +49,7 @@ const { pathname } = Astro.props;
     height: var(--tap);
     padding: 0;
     border: 0;
-    background: var(--bg);
+    background: none;
     color: var(--ink);
     cursor: pointer;
   }
@@ -108,10 +112,17 @@ const { pathname } = Astro.props;
 
   .links {
     margin-top: var(--space-5);
+    /* Minimum space between the two link groups on a short screen */
+    margin-bottom: var(--space-5);
+  }
+
+  /* Pushes the contact links and copyright to the bottom */
+  .contact-wrap {
+    margin-top: auto;
   }
 
   .footer {
-    margin-top: auto;
+    margin-top: var(--space-5);
   }
 
   @media (width >= 900px) {
