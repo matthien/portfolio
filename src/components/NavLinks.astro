@@ -1,0 +1,73 @@
+---
+import { nav, isActive } from '../lib/site';
+
+interface Props {
+  pathname: string;
+  variant: 'sidebar' | 'menu';
+}
+
+const { pathname, variant } = Astro.props;
+---
+
+<nav aria-label="Main">
+  <ul class:list={['nav', variant]} role="list">
+    {
+      nav.map((item) => {
+        const active = isActive(item.href, pathname);
+        return (
+          <li>
+            <a
+              class:list={['nav-link', 't-link', { active }]}
+              href={item.href}
+              aria-current={active ? 'page' : undefined}
+              data-menu-link={variant === 'menu' ? '' : undefined}
+            >
+              {active && (
+                <span class="dash" aria-hidden="true">
+                  –
+                </span>
+              )}
+              {item.label}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+</nav>
+
+<style>
+  .nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar {
+    gap: var(--space-1);
+  }
+
+  .menu {
+    gap: 0;
+  }
+
+  .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--muted);
+  }
+
+  .sidebar .nav-link {
+    height: var(--nav-row);
+  }
+
+  .menu .nav-link {
+    height: var(--nav-row-mobile);
+    font-size: var(--size-mobile-link);
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--ink);
+  }
+</style>

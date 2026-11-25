@@ -1,0 +1,42 @@
+---
+interface Props {
+  href?: string;
+}
+
+const { href = '/' } = Astro.props;
+---
+
+<a class="back-link t-link" href={href}>
+  <svg
+    class="arrow"
+    viewBox="0 0 12 12"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.5"
+    stroke-linecap="square"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M10.5 6H2M5.5 2.5 2 6l3.5 3.5"></path>
+  </svg>
+  All work
+</a>
+
+<style>
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: var(--space-1);
+    color: var(--muted);
+  }
+
+  .back-link:hover {
+    color: var(--ink);
+  }
+
+  .arrow {
+    width: 1em;
+    height: 1em;
+  }
+</style>

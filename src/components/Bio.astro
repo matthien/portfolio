@@ -1,0 +1,22 @@
+---
+import { site } from '../lib/site';
+---
+
+<div class="bio">
+  {site.bio.map((paragraph) => <p class="t-body">{paragraph}</p>)}
+</div>
+
+<style>
+  .bio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--blank-line);
+    max-width: var(--bio-max);
+  }
+
+  @media (width < 900px) {
+    .bio {
+      gap: var(--blank-line-mobile);
+    }
+  }
+</style>

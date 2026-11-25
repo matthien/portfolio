@@ -1,0 +1,227 @@
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body,
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+  padding: 0;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+/* Base */
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--size-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: var(--focus-width) solid var(--ink);
+  outline-offset: var(--focus-offset);
+}
+
+html.menu-open {
+  overflow: hidden;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Text styles. Each class switches to its mobile spec below 900px. */
+.t-name {
+  font-family: var(--font-sans);
+  font-size: var(--size-name);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading);
+}
+
+.t-mobile-header {
+  font-family: var(--font-sans);
+  font-size: var(--size-mobile-header);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading);
+}
+
+/* Case study page title: name style on desktop, mobile-case-study-title on mobile */
+.t-page-title {
+  font-family: var(--font-sans);
+  font-size: var(--size-name);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading);
+}
+
+.t-title {
+  font-family: var(--font-sans);
+  font-size: var(--size-title);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading);
+}
+
+.t-body {
+  font-family: var(--font-sans);
+  font-size: var(--size-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading);
+}
+
+.t-link {
+  font-family: var(--font-sans);
+  font-size: var(--size-link);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading);
+}
+
+/* Pill style without the pill shape: footer and meta labels */
+.t-mono {
+  font-family: var(--font-mono);
+  font-size: var(--size-pill);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading);
+  text-transform: uppercase;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+@media (width < 900px) {
+  .t-page-title {
+    font-size: var(--size-mobile-title);
+    font-weight: var(--weight-regular);
+  }
+
+  .t-title {
+    font-size: var(--size-mobile-title);
+  }
+
+  .t-body {
+    font-size: var(--size-mobile-body);
+  }
+
+  .t-link {
+    font-size: var(--size-mobile-link);
+  }
+}
+
+/* Image or placeholder block. Square corners, no border. */
+.media {
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--aspect-desktop);
+  background: var(--media-placeholder);
+  border-radius: var(--radius-none);
+  overflow: hidden;
+}
+
+.media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (width < 900px) {
+  .media {
+    aspect-ratio: var(--aspect-mobile);
+  }
+}
+
+/* Running text, including rendered markdown */
+.prose {
+  max-width: var(--prose-max);
+}
+
+.prose > * + * {
+  margin-top: var(--space-2);
+}
+
+.prose > * + h2 {
+  margin-top: var(--space-4);
+}
+
+.prose h2 {
+  font-size: var(--size-title);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading);
+}
+
+.prose p,
+.prose li {
+  font-size: var(--size-body);
+  line-height: var(--leading);
+}
+
+.prose a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (width < 900px) {
+  .prose h2 {
+    font-size: var(--size-mobile-title);
+  }
+
+  .prose p,
+  .prose li {
+    font-size: var(--size-mobile-body);
+  }
+}
+
+/* Simple page stack used by About, Contact, Thoughtscape, case studies */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--content-max);
+}

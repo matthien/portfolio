@@ -1,0 +1,92 @@
+/*
+ * Design tokens. Every component reads from these; do not hard-code values.
+ *
+ * Breakpoint: desktop is 900px and up, mobile is below 900px.
+ * CSS custom properties cannot be used inside media queries, so the
+ * breakpoint is written as (width >= 900px) / (width < 900px) where needed.
+ */
+:root {
+  /* Color */
+  --bg: #ffffff;
+  --ink: #000000;
+  --muted: #737373;
+  --media-placeholder: #888888;
+  --tag-ink: #666666;
+  --line: #e5e5e5;
+
+  /* Font families */
+  --font-sans: Geist, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, Menlo, monospace;
+
+  /* Every text style uses line-height 1.5 */
+  --leading: 1.5;
+  --weight-regular: 400;
+  --weight-medium: 500;
+
+  /* Type, desktop (900px and up) */
+  --size-name: 1.25rem;
+  --size-title: 1rem;
+  --size-body: 0.9rem;
+  --size-link: 0.9rem;
+  --size-pill: 0.8rem;
+
+  /* Type, mobile (below 900px) */
+  --size-mobile-header: 1.25rem;
+  --size-mobile-body: 0.9rem;
+  --size-mobile-title: 1rem;
+  --size-mobile-link: 0.9rem;
+  --size-mobile-pill: 0.8rem;
+
+  /* Spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 40px;
+  --space-7: 48px;
+
+  /* Radius */
+  --radius-none: 0;
+
+  /* One blank line of body text (font size x 1.5) */
+  --blank-line: calc(var(--size-body) * var(--leading));
+  --blank-line-mobile: calc(var(--size-mobile-body) * var(--leading));
+
+  /* Nav rows */
+  --nav-row: calc(var(--size-link) * var(--leading)); /* one line of link text */
+  --nav-row-mobile: 32px;
+
+  /* Layout */
+  --sidebar-width: 300px;
+  --bio-max: 230px;
+  --content-max: 720px;
+  --prose-max: 480px;
+  --label-col: 120px;
+
+  /* Media */
+  --aspect-desktop: 1.41;
+  --aspect-mobile: 4 / 3;
+
+  /* Mobile menu button */
+  --tap: 44px;
+  --bar-w: 20px;
+  --bar-h: 1.5px;
+  --bar-gap: 5.5px;
+
+  /* Focus */
+  --focus-width: 2px;
+  --focus-offset: 4px;
+
+  /* Motion */
+  --ease: ease;
+  --dur-hover: 200ms;
+  --dur-fade: 200ms;
+  --dur-bars: 250ms;
+  --hover-lift: -4px;
+  --hover-dim: 0.8;
+
+  /* Stacking */
+  --z-menu: 50;
+  --z-menu-button: 60;
+}

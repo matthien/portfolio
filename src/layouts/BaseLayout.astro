@@ -1,0 +1,113 @@
+---
+import '../styles/tokens.css';
+import '../styles/global.css';
+import { site } from '../lib/site';
+import Bio from '../components/Bio.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import Sidebar from '../components/Sidebar.astro';
+
+interface Props {
+  /** Page title; the site name is appended. Omit on the home page. */
+  title?: string;
+  description?: string;
+  /** Show the bio under the name on mobile (the Work page). */
+  showMobileBio?: boolean;
+}
+
+const { title, description = site.description, showMobileBio = false } = Astro.props;
+
+const pageTitle = title ? `${title} | ${site.name}` : site.name;
+const pathname = Astro.url.pathname;
+const canonical = new URL(pathname, Astro.site ?? site.url).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&display=swap"
+    />
+  </head>
+  <body>
+    <div class="shell">
+      <Sidebar pathname={pathname} />
+
+      <header class="mobile-header" data-menu-inert>
+        <p class="t-mobile-header">{site.name}</p>
+        {
+          showMobileBio && (
+            <div class="mobile-bio">
+              <Bio />
+            </div>
+          )
+        }
+      </header>
+
+      <MobileMenu pathname={pathname} />
+
+      <main class="main" data-menu-inert>
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  .shell {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  .main {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .mobile-header {
+    display: none;
+  }
+
+  @media (width < 900px) {
+    .shell {
+      display: block;
+      padding: var(--space-4) var(--space-3);
+    }
+
+    .mobile-header {
+      display: block;
+      /* Keep the name clear of the fixed menu button */
+      padding-right: var(--tap);
+    }
+
+    .mobile-bio {
+      margin-top: var(--space-2);
+    }
+
+    .main {
+      margin-top: var(--space-7);
+      padding: 0;
+    }
+  }
+</style>

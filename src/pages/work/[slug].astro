@@ -1,0 +1,99 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BackLink from '../../components/BackLink.astro';
+import Pill from '../../components/Pill.astro';
+
+export const getStaticPaths = (async () => {
+  const work = await getCollection('work');
+  return work.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  entry: CollectionEntry<'work'>;
+}
+
+const { entry } = Astro.props;
+const { title, tag, cover, coverAlt, role, timeline, team } = entry.data;
+const { Content } = await render(entry);
+
+const meta = [
+  { label: 'Role', value: role },
+  { label: 'Timeline', value: timeline },
+  { label: 'Team', value: team },
+];
+---
+
+<BaseLayout title={title} description={`${title}, a case study by Matt Thien.`}>
+  <article class="page">
+    <BackLink />
+
+    <header class="title-row">
+      <h1 class="t-page-title">{title}</h1>
+      <Pill>{tag}</Pill>
+    </header>
+
+    <div class="media">
+      {
+        cover && (
+          <Image
+            src={cover}
+            alt={coverAlt ?? ''}
+            widths={[720, 1080, 1440]}
+            sizes="(width >= 900px) 720px, calc(100vw - 32px)"
+            loading="eager"
+          />
+        )
+      }
+    </div>
+
+    <dl class="meta">
+      {
+        meta.map((item) => (
+          <div class="meta-item">
+            <dt class="t-mono muted">{item.label}</dt>
+            <dd class="t-body">{item.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .title-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line);
+  }
+
+  .meta-item dd {
+    margin-top: var(--space-1);
+  }
+
+  @media (width < 900px) {
+    .title-row {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-2);
+    }
+
+    .meta {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

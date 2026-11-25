@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+
+const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout showMobileBio>
+  <h1 class="visually-hidden">Work</h1>
+  <ul class="grid" role="list">
+    {
+      work.map((entry) => (
+        <li>
+          <ProjectCard
+            href={`/work/${entry.id}`}
+            title={entry.data.title}
+            tag={entry.data.tag}
+            cover={entry.data.cover}
+          />
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-7);
+  }
+
+  @media (width < 900px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-4);
+    }
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+import { site } from '../lib/site';
+import Bio from './Bio.astro';
+import NavLinks from './NavLinks.astro';
+
+interface Props {
+  pathname: string;
+}
+
+const { pathname } = Astro.props;
+---
+
+<aside class="sidebar">
+  <p class="t-name">{site.name}</p>
+  <div class="bio-wrap">
+    <Bio />
+  </div>
+  <div class="nav-wrap">
+    <NavLinks pathname={pathname} variant="sidebar" />
+  </div>
+  <p class="footer t-mono muted">{site.footer}</p>
+</aside>
+
+<style>
+  .sidebar {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    width: var(--sidebar-width);
+    height: 100vh;
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .bio-wrap {
+    margin-top: var(--space-2);
+  }
+
+  .nav-wrap {
+    margin-top: var(--space-5);
+  }
+
+  .footer {
+    margin-top: auto;
+  }
+
+  @media (width < 900px) {
+    .sidebar {
+      display: none;
+    }
+  }
+</style>

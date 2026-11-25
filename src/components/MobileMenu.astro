@@ -1,0 +1,168 @@
+---
+import { site } from '../lib/site';
+import NavLinks from './NavLinks.astro';
+
+interface Props {
+  pathname: string;
+}
+
+const { pathname } = Astro.props;
+---
+
+<button
+  class="menu-button"
+  type="button"
+  aria-expanded="false"
+  aria-controls="mobile-menu"
+  aria-label="Open menu"
+  data-menu-button
+>
+  <span class="bars" aria-hidden="true">
+    <span class="bar"></span>
+    <span class="bar"></span>
+  </span>
+</button>
+
+<div id="mobile-menu" class="menu" data-menu inert>
+  <p class="t-mobile-header">{site.name}</p>
+  <div class="links">
+    <NavLinks pathname={pathname} variant="menu" />
+  </div>
+  <p class="footer t-mono muted">{site.footer}</p>
+</div>
+
+<style>
+  .menu-button {
+    position: fixed;
+    /* Vertically centered on the 24px name line that starts 24px from the top */
+    top: calc(var(--space-4) + (var(--size-mobile-header) * var(--leading) - var(--tap)) / 2);
+    /* Icon's right edge lines up with the 16px page gutter */
+    right: calc(var(--space-3) - (var(--tap) - var(--bar-w)) / 2);
+    z-index: var(--z-menu-button);
+    display: grid;
+    place-items: center;
+    width: var(--tap);
+    height: var(--tap);
+    padding: 0;
+    border: 0;
+    background: var(--bg);
+    color: var(--ink);
+    cursor: pointer;
+  }
+
+  .bars {
+    position: relative;
+    display: block;
+    width: var(--bar-w);
+    height: calc(var(--bar-h) * 2 + var(--bar-gap));
+  }
+
+  .bar {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: var(--bar-h);
+    background: currentColor;
+    transition: transform var(--dur-bars) var(--ease);
+  }
+
+  .bar:first-child {
+    top: 0;
+  }
+
+  .bar:last-child {
+    bottom: 0;
+  }
+
+  .menu-button[aria-expanded='true'] .bar:first-child {
+    transform: translateY(calc((var(--bar-gap) + var(--bar-h)) / 2)) rotate(45deg);
+  }
+
+  .menu-button[aria-expanded='true'] .bar:last-child {
+    transform: translateY(calc((var(--bar-gap) + var(--bar-h)) / -2)) rotate(-45deg);
+  }
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-menu);
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4) var(--space-3);
+    overflow-y: auto;
+    background: var(--bg);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--dur-fade) var(--ease),
+      visibility 0s linear var(--dur-fade);
+  }
+
+  .menu[data-open='true'] {
+    opacity: 1;
+    visibility: visible;
+    transition:
+      opacity var(--dur-fade) var(--ease),
+      visibility 0s;
+  }
+
+  .links {
+    margin-top: var(--space-5);
+  }
+
+  .footer {
+    margin-top: auto;
+  }
+
+  @media (width >= 900px) {
+    .menu-button,
+    .menu {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar,
+    .menu,
+    .menu[data-open='true'] {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+  if (button && menu) {
+    const background = document.querySelectorAll<HTMLElement>('[data-menu-inert]');
+
+    const setOpen = (open: boolean, returnFocus = false) => {
+      button.setAttribute('aria-expanded', String(open));
+      button.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      menu.dataset.open = String(open);
+      menu.inert = !open;
+      background.forEach((el) => (el.inert = open));
+      document.documentElement.classList.toggle('menu-open', open);
+      if (!open && returnFocus) button.focus();
+    };
+
+    const isOpen = () => button.getAttribute('aria-expanded') === 'true';
+
+    button.addEventListener('click', () => setOpen(!isOpen(), true));
+
+    menu.querySelectorAll('[data-menu-link]').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isOpen()) setOpen(false, true);
+    });
+
+    // Close if the viewport grows to desktop, or the page is restored from the back/forward cache.
+    matchMedia('(width >= 900px)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+    window.addEventListener('pageshow', () => setOpen(false));
+  }
+</script>
