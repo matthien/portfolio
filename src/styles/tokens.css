@@ -70,9 +70,12 @@
   --about-text: 400px;
   --about-text-min: 280px;
   --about-photos-min: 360px;
-  --year-col: 44px;
   --exp-col-gap: 12px;
   --exp-row-pad-mobile: 6px;
+
+  /* Thoughtscape embed */
+  --thoughtscape-mat: #19191b; /* Thoughtscape's own mat color */
+  --embed-min-height: 480px;
 
   /* Media */
   --aspect-desktop: 1.41;
@@ -99,4 +102,20 @@
   /* Stacking */
   --z-menu: 50;
   --z-menu-button: 60;
+}
+
+/*
+ * Mat theme: the Thoughtscape page. The page, sidebar and mobile menu take
+ * Thoughtscape's dark mat color so the embed runs straight into them.
+ * Text colors are Thoughtscape's own (white titles, #8a8a90 muted), which
+ * keeps muted text at 5.1:1 contrast on the mat.
+ */
+:root[data-theme='mat'] {
+  color-scheme: dark;
+  --bg: var(--thoughtscape-mat);
+  --ink: #ffffff;
+  --muted: #8a8a90;
+  --tag-ink: #8a8a90;
+  --line: rgba(255, 255, 255, 0.12);
+  --media-placeholder: #2d2d31;
 }

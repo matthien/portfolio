@@ -36,9 +36,6 @@ const photoSizes =
           {
             experience.map((item) => (
               <li class="job t-body">
-                <time class="muted" datetime={String(item.year)}>
-                  {item.year}
-                </time>
                 <span class="what">
                   <span class="org">{item.organization}</span>
                   <span class="role muted">{item.role}</span>
@@ -109,7 +106,7 @@ const photoSizes =
 
   .job {
     display: grid;
-    grid-template-columns: var(--year-col) minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     column-gap: var(--exp-col-gap);
     align-items: baseline;
     min-height: var(--space-5);
@@ -179,9 +176,9 @@ const photoSizes =
       margin-top: var(--space-5);
     }
 
-    /* Year | organization, with the role always on the line under the organization */
+    /* Organization, with the role always on the line under it */
     .job {
-      grid-template-columns: var(--year-col) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 1fr);
       min-height: 0;
       padding-block: var(--exp-row-pad-mobile);
     }

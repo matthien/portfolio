@@ -1,17 +1,16 @@
 import type { ImageMetadata } from 'astro';
 
 export interface Experience {
-  year: number;
   organization: string;
   role: string;
 }
 
 /** Shown on the About page, in this order. */
 export const experience: Experience[] = [
-  { year: 2025, organization: 'Rocket Mortgage', role: 'Product Design Intern' },
-  { year: 2025, organization: 'Pratt Institute Libraries', role: 'Digital Designer (GA)' },
-  { year: 2024, organization: 'Center for Digital Experiences', role: 'Product Consultant' },
-  { year: 2024, organization: 'Asian CineVision', role: 'Product Design Intern' },
+  { organization: 'Rocket Mortgage', role: 'Product Design Intern' },
+  { organization: 'Pratt Institute Libraries', role: 'Digital Designer (GA)' },
+  { organization: 'Center for Digital Experiences', role: 'Product Consultant' },
+  { organization: 'Asian CineVision', role: 'Product Design Intern' },
 ];
 
 export interface Photo {

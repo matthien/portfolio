@@ -1,17 +1,55 @@
 ---
 /*
- * Placeholder. This route will become Thoughtscape, an interactive canvas,
- * mounted as a client-side island (for example <Canvas client:only="..." />).
- * Keep that script scoped to this page so the rest of the site ships no JS.
+ * Thoughtscape is its own Next.js app. This page embeds the live site full
+ * bleed in an iframe, so new syncs and re-arranged cards show up here
+ * automatically. The page uses the "mat" theme so the sidebar matches it.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../lib/site';
 ---
 
-<BaseLayout title="Thoughtscape" description="Thoughtscape, an interactive canvas by Matt Thien.">
-  <section class="page">
-    <h1 class="t-title">Thoughtscape</h1>
-    <div class="prose">
-      <p>[One line on Thoughtscape and a link to it]</p>
-    </div>
-  </section>
+<BaseLayout
+  title="Thoughtscape"
+  description="Thoughtscape, an interactive canvas by Matt Thien."
+  theme="mat"
+  fullBleed
+  compactMobileTop
+>
+  <h1 class="visually-hidden">Thoughtscape</h1>
+  <div class="frame">
+    <iframe
+      src={site.thoughtscapeUrl}
+      title="Thoughtscape: Matt's movie and book reviews on a draggable canvas"
+      referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
 </BaseLayout>
+
+<style>
+  /*
+   * Desktop: the frame fills the whole area right of the sidebar, top to
+   * bottom, so the page itself never scrolls. That matters because the mouse
+   * wheel zooms the mat while the cursor is over it.
+   */
+  .frame {
+    height: 100dvh;
+    min-height: var(--embed-min-height);
+    background: var(--thoughtscape-mat);
+  }
+
+  .frame iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* Mobile: edge to edge, from 32px under the name to the bottom of the screen */
+  @media (width < 900px) {
+    .frame {
+      height: calc(
+        100svh - var(--space-4) - var(--size-mobile-header) * var(--leading) - var(--space-5)
+      );
+      min-height: 0;
+    }
+  }
+</style>

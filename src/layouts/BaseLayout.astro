@@ -14,6 +14,10 @@ interface Props {
   showMobileBio?: boolean;
   /** On mobile, start the page content 32px below the name instead of 48px (the About page). */
   compactMobileTop?: boolean;
+  /** Let the page content run edge to edge, with no padding around it (the Thoughtscape page). */
+  fullBleed?: boolean;
+  /** "mat" switches the whole page to Thoughtscape's dark mat colors (see tokens.css). */
+  theme?: 'light' | 'mat';
 }
 
 const {
@@ -21,6 +25,8 @@ const {
   description = site.description,
   showMobileBio = false,
   compactMobileTop = false,
+  fullBleed = false,
+  theme = 'light',
 } = Astro.props;
 
 const pageTitle = title ? `${title} | ${site.name}` : site.name;
@@ -29,7 +35,7 @@ const canonical = new URL(pathname, Astro.site ?? site.url).href;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme={theme === 'mat' ? 'mat' : undefined}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -37,7 +43,7 @@ const canonical = new URL(pathname, Astro.site ?? site.url).href;
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#ffffff" />
+    <meta name="theme-color" content={theme === 'mat' ? '#19191b' : '#ffffff'} />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
@@ -73,7 +79,10 @@ const canonical = new URL(pathname, Astro.site ?? site.url).href;
 
       <MobileMenu pathname={pathname} />
 
-      <main class:list={['main', { compact: compactMobileTop }]} data-menu-inert>
+      <main
+        class:list={['main', { compact: compactMobileTop, bleed: fullBleed }]}
+        data-menu-inert
+      >
         <slot />
       </main>
     </div>
@@ -90,6 +99,10 @@ const canonical = new URL(pathname, Astro.site ?? site.url).href;
     flex: 1;
     min-width: 0;
     padding: var(--space-6) var(--space-4);
+  }
+
+  .main.bleed {
+    padding: 0;
   }
 
   .mobile-header {
@@ -119,6 +132,12 @@ const canonical = new URL(pathname, Astro.site ?? site.url).href;
 
     .main.compact {
       margin-top: var(--space-5);
+    }
+
+    /* Cancel the page's side and bottom padding so the content reaches the screen edges */
+    .main.bleed {
+      margin-inline: calc(-1 * var(--space-3));
+      margin-bottom: calc(-1 * var(--space-4));
     }
   }
 </style>

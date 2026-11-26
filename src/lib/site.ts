@@ -2,6 +2,11 @@ export const site = {
   name: 'Matt Thien',
   url: 'https://matthewthien.com',
   footer: 'Matthew Thien © 2026',
+  /**
+   * Thoughtscape's mini mat (no ruler or search), embedded on /thoughtscape.
+   * It only allows itself to be framed by matthewthien.com and localhost:4321.
+   */
+  thoughtscapeUrl: 'https://thoughtscape-ecbw.vercel.app/embed',
   description:
     'Matt Thien is a product designer who designs and builds products that make complicated things easier to understand.',
   bio: [
