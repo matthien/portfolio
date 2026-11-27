@@ -2,8 +2,7 @@
 import '../styles/tokens.css';
 import '../styles/global.css';
 import { site } from '../lib/site';
-import Bio from '../components/Bio.astro';
-import MobileMenu from '../components/MobileMenu.astro';
+import Bio from '../components/Bio.astro';import MobileMenu from '../components/MobileMenu.astro';
 import Sidebar from '../components/Sidebar.astro';
 
 interface Props {
@@ -67,7 +66,7 @@ const canonical = new URL(pathname, Astro.site ?? site.url).href;
       <Sidebar pathname={pathname} />
 
       <header class="mobile-header" data-menu-inert>
-        <p class="t-mobile-header">{site.name}</p>
+        <p class="t-mobile-header"><a class="home-link" href="/">{site.name}</a></p>
         {
           showMobileBio && (
             <div class="mobile-bio">

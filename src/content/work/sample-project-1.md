@@ -1,7 +1,8 @@
 ---
 title: Rocket Mortgage Notification System
+cover: ../../assets/home/images/rocket-notifications.png
+hoverVideo: home/videos/rocketpronotifications.mp4
 tag: Product design
-# cover: ../../assets/sample-project-1.png
 order: 1
 role: "[Your role]"
 timeline: "[Dates]"

@@ -1,7 +1,6 @@
 ---
 import { site } from '../lib/site';
-import Bio from './Bio.astro';
-import ContactLinks from './ContactLinks.astro';
+import Bio from './Bio.astro';import ContactLinks from './ContactLinks.astro';
 import NavLinks from './NavLinks.astro';
 
 interface Props {
@@ -12,7 +11,7 @@ const { pathname } = Astro.props;
 ---
 
 <aside class="sidebar">
-  <p class="t-name">{site.name}</p>
+  <p class="t-name"><a class="home-link" href="/">{site.name}</a></p>
   <div class="bio-wrap">
     <Bio />
   </div>

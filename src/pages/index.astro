@@ -2,39 +2,68 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import { videoUrl } from '../lib/videos';
 
 const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+
+/*
+ * Two columns that stack on their own, so each card sits a fixed gap below
+ * the one above it whatever the thumbnail heights. Cards alternate left,
+ * right, left... so the grid still reads 1, 2 / 3, 4 / 5, 6.
+ */
+const columns = [0, 1].map((column) =>
+  work.map((entry, index) => ({ entry, index })).filter(({ index }) => index % 2 === column),
+);
 ---
 
 <BaseLayout showMobileBio>
   <h1 class="visually-hidden">Work</h1>
-  <ul class="grid" role="list">
+  <div class="grid">
     {
-      work.map((entry) => (
-        <li>
-          <ProjectCard
-            href={`/work/${entry.id}`}
-            title={entry.data.title}
-            tag={entry.data.tag}
-            cover={entry.data.cover}
-          />
-        </li>
+      columns.map((cards) => (
+        <ul class="column" role="list">
+          {cards.map(({ entry, index }) => (
+            <li style={`order: ${index}`}>
+              <ProjectCard
+                href={`/work/${entry.id}`}
+                title={entry.data.title}
+                tag={entry.data.tag}
+                cover={entry.data.cover}
+                hoverVideo={entry.data.hoverVideo && videoUrl(entry.data.hoverVideo)}
+              />
+            </li>
+          ))}
+        </ul>
       ))
     }
-  </ul>
+  </div>
 </BaseLayout>
 
 <style>
   .grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-7);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-5);
   }
 
+  .column {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  /* One column: the two lists merge and each card returns to its place in the order */
   @media (width < 900px) {
     .grid {
-      grid-template-columns: minmax(0, 1fr);
+      flex-direction: column;
+      align-items: stretch;
       gap: var(--space-4);
+    }
+
+    .column {
+      display: contents;
     }
   }
 </style>

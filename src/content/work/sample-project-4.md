@@ -1,7 +1,8 @@
 ---
-title: Rocket Mortgage Notification System
+title: Thoughtscape
+cover: ../../assets/home/images/thoughtscape.png
+hoverVideo: home/videos/thoughtscape.mp4
 tag: Product design
-# cover: ../../assets/sample-project-4.png
 order: 4
 role: "[Your role]"
 timeline: "[Dates]"

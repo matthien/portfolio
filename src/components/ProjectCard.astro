@@ -8,12 +8,14 @@ interface Props {
   title: string;
   tag: string;
   cover?: ImageMetadata;
+  /** URL of a muted MP4 that plays over the cover on hover. */
+  hoverVideo?: string;
 }
 
-const { href, title, tag, cover } = Astro.props;
+const { href, title, tag, cover, hoverVideo } = Astro.props;
 ---
 
-<a class="card" href={href}>
+<a class:list={['card', { 'has-video': hoverVideo }]} href={href}>
   <div class="media">
     {
       cover && (
@@ -21,7 +23,21 @@ const { href, title, tag, cover } = Astro.props;
           src={cover}
           alt=""
           widths={[480, 720, 960, 1440]}
-          sizes="(width >= 900px) calc((100vw - 348px - 48px) / 2), calc(100vw - 32px)"
+          sizes="(width >= 900px) calc((100vw - 348px - 32px) / 2), calc(100vw - 32px)"
+        />
+      )
+    }
+    {
+      hoverVideo && (
+        <video
+          class="video"
+          data-src={hoverVideo}
+          muted
+          loop
+          playsinline
+          preload="none"
+          disablepictureinpicture
+          aria-hidden="true"
         />
       )
     }
@@ -32,6 +48,47 @@ const { href, title, tag, cover } = Astro.props;
   </div>
 </a>
 
+<script>
+  /*
+   * Each video only downloads the first time its card is hovered or focused,
+   * then plays from the start on every hover. Touch devices and
+   * reduced-motion visitors keep the still image and never download it.
+   */
+  const canPlay = () =>
+    window.matchMedia('(hover: hover)').matches &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll('.card.has-video').forEach((card) => {
+    const video = card.querySelector<HTMLVideoElement>('video.video');
+    if (!video) return;
+
+    const start = () => {
+      if (!canPlay()) return;
+      if (video.dataset.src) {
+        video.src = video.dataset.src;
+        delete video.dataset.src;
+      }
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    };
+
+    const stop = () => {
+      video.pause();
+      video.classList.remove('is-playing');
+    };
+
+    video.addEventListener('playing', () => video.classList.add('is-playing'));
+    card.addEventListener('pointerenter', start);
+    card.addEventListener('focusin', start);
+    card.addEventListener('pointerleave', () => {
+      if (!card.contains(document.activeElement)) stop();
+    });
+    card.addEventListener('focusout', () => {
+      if (!card.matches(':hover')) stop();
+    });
+  });
+</script>
+
 <style>
   .card {
     display: block;
@@ -39,14 +96,51 @@ const { href, title, tag, cover } = Astro.props;
   }
 
   .media {
+    position: relative;
+    /* Override the global .media shape so the box hugs the thumbnail */
+    aspect-ratio: auto;
+    overflow: hidden;
+    background: var(--media-placeholder);
     transition:
       filter var(--dur-hover) var(--ease),
-      transform var(--dur-hover) var(--ease);
+      transform var(--dur-hover) var(--ease),
+      box-shadow var(--dur-hover) var(--ease);
+  }
+
+  /* The thumbnail sets the card's height at its own aspect ratio */
+  .media :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* The video fills the thumbnail's box, cropping to fit */
+  .video {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity var(--dur-hover) var(--ease);
+  }
+
+  .video.is-playing {
+    opacity: 1;
   }
 
   .card:hover .media {
     filter: brightness(var(--hover-dim));
     transform: translateY(var(--hover-lift));
+    box-shadow: var(--hover-shadow);
+  }
+
+  /* Cards with a video lift but don't dim, so the video plays at full brightness */
+  @media (prefers-reduced-motion: no-preference) {
+    .card.has-video:hover .media {
+      filter: none;
+    }
   }
 
   .caption {
@@ -68,11 +162,17 @@ const { href, title, tag, cover } = Astro.props;
 
   @media (prefers-reduced-motion: reduce) {
     .media {
-      transition: filter var(--dur-hover) var(--ease);
+      transition:
+        filter var(--dur-hover) var(--ease),
+        box-shadow var(--dur-hover) var(--ease);
     }
 
     .card:hover .media {
       transform: none;
+    }
+
+    .video {
+      display: none;
     }
   }
 </style>

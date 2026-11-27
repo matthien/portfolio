@@ -1,7 +1,7 @@
 ---
-title: Rocket Mortgage Notification System
+title: ClassPass Unofficial Design System
+cover: ../../assets/home/images/classpass.png
 tag: Product design
-# cover: ../../assets/sample-project-3.png
 order: 3
 role: "[Your role]"
 timeline: "[Dates]"

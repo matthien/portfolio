@@ -22,11 +22,9 @@ const { pathname, variant } = Astro.props;
               aria-current={active ? 'page' : undefined}
               data-menu-link={variant === 'menu' ? '' : undefined}
             >
-              {active && (
-                <span class="dash" aria-hidden="true">
-                  –
-                </span>
-              )}
+              <span class="dash-wrap" aria-hidden="true">
+                <span class="dash">–</span>
+              </span>
               {item.label}
             </a>
           </li>
@@ -53,8 +51,55 @@ const { pathname, variant } = Astro.props;
   .nav-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-2);
     color: var(--muted);
+    transition: color var(--dur-hover) var(--ease);
+  }
+
+  /*
+   * The dash sits in a column that is 0 wide at rest. On the active link, and on hover,
+   * the column opens to the dash's width and pushes the label to the right.
+   */
+  .dash-wrap {
+    display: grid;
+    grid-template-columns: 0fr;
+    overflow: hidden;
+    transition: grid-template-columns var(--dur-dash) var(--ease-out);
+  }
+
+  .dash {
+    min-width: 0;
+    padding-right: var(--space-2);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity var(--dur-dash-fade) var(--ease-out);
+  }
+
+  .nav-link.active .dash-wrap,
+  .nav-link:focus-visible .dash-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-link.active .dash,
+  .nav-link:focus-visible .dash {
+    opacity: 1;
+  }
+
+  @media (hover: hover) {
+    .nav-link:hover .dash-wrap {
+      grid-template-columns: 1fr;
+    }
+
+    .nav-link:hover .dash {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-link,
+    .dash-wrap,
+    .dash {
+      transition: none;
+    }
   }
 
   .sidebar .nav-link {

@@ -1,7 +1,7 @@
 ---
-title: Rocket Mortgage Notification System
+title: Gutenberg Technology AI
+cover: ../../assets/home/images/gutenberg.png
 tag: Product design
-# cover: ../../assets/sample-project-6.png
 order: 6
 role: "[Your role]"
 timeline: "[Dates]"

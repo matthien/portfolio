@@ -1,7 +1,8 @@
 ---
-title: Rocket Mortgage Notification System
+title: Rocket Mortgage AI Sales Coach
+cover: ../../assets/home/images/rocket-ai.png
+hoverVideo: home/videos/rocketpronvigate.mp4
 tag: Product design
-# cover: ../../assets/sample-project-2.png
 order: 2
 role: "[Your role]"
 timeline: "[Dates]"

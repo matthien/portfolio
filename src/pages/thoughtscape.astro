@@ -6,6 +6,9 @@
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../lib/site';
+
+/** The full Thoughtscape site, for the "open full thoughtscape" link. */
+const fullSiteUrl = 'https://thoughtscape-ecbw.vercel.app/';
 ---
 
 <BaseLayout
@@ -15,8 +18,37 @@ import { site } from '../lib/site';
   fullBleed
   compactMobileTop
 >
+  <!-- Roboto Mono for the link below (Thoughtscape's own typeface). Only this page needs it. -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap"
+  />
+
   <h1 class="visually-hidden">Thoughtscape</h1>
   <div class="frame">
+    <!--
+      Sits on this page, over the iframe, so clicks on it never reach the
+      canvas (no drag, no review opening). Placed before the iframe so Tab
+      reaches it before the canvas.
+    -->
+    <a
+      class="open-full"
+      href={fullSiteUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Open full thoughtscape (opens in a new tab)"
+    >
+      open full thoughtscape
+      <svg
+        width="10"
+        height="10"
+        viewBox="0 0 12 12"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"></path></svg>
+    </a>
+
     <iframe
       src={site.thoughtscapeUrl}
       title="Thoughtscape: Matt's movie and book reviews on a draggable canvas"
@@ -31,6 +63,27 @@ import { site } from '../lib/site';
    * wheel zooms the mat while the cursor is over it.
    */
   .frame {
+    /*
+     * "open full thoughtscape" link. Copies Thoughtscape's own buttons
+     * ("reset view", "back to canvas" in its Canvas.module.css) so it reads
+     * as part of the mat. Keep these in step if those change.
+     */
+    --ts-font: 'Roboto Mono', ui-monospace, Menlo, monospace;
+    --ts-control-size: 12px;
+    --ts-control-tracking: -0.24px;
+    --ts-control-bg: #2d2d2d;
+    --ts-control-bg-hover: #4d4d4d;
+    --ts-control-ink: #ffffff;
+    --ts-control-radius: 4px;
+    --ts-control-pad-y: 6px;
+    --ts-control-pad-x: 12px;
+    --ts-control-shadow: 0 4px 2px rgba(0, 0, 0, 0.25);
+    --ts-control-hover-dur: 120ms;
+    --ts-control-gap: 6px;
+    --ts-control-focus-offset: 3px;
+    --ts-control-z: 3;
+
+    position: relative;
     height: 100dvh;
     min-height: var(--embed-min-height);
     background: var(--thoughtscape-mat);
@@ -43,6 +96,39 @@ import { site } from '../lib/site';
     border: 0;
   }
 
+  .open-full {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    z-index: var(--ts-control-z);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ts-control-gap);
+    padding: var(--ts-control-pad-y) var(--ts-control-pad-x);
+    border: 0;
+    border-radius: var(--ts-control-radius);
+    background: var(--ts-control-bg);
+    box-shadow: var(--ts-control-shadow);
+    color: var(--ts-control-ink);
+    font-family: var(--ts-font);
+    font-size: var(--ts-control-size);
+    font-weight: var(--weight-regular);
+    letter-spacing: var(--ts-control-tracking);
+    /* A <button>'s default, which Thoughtscape's buttons use */
+    line-height: normal;
+    text-decoration: none;
+    transition: background var(--ts-control-hover-dur) var(--ease);
+  }
+
+  .open-full:hover {
+    background: var(--ts-control-bg-hover);
+  }
+
+  .open-full:focus-visible {
+    outline: var(--focus-width) solid var(--ts-control-ink);
+    outline-offset: var(--ts-control-focus-offset);
+  }
+
   /* Mobile: edge to edge, from 32px under the name to the bottom of the screen */
   @media (width < 900px) {
     .frame {
@@ -50,6 +136,15 @@ import { site } from '../lib/site';
         100svh - var(--space-4) - var(--size-mobile-header) * var(--leading) - var(--space-5)
       );
       min-height: 0;
+    }
+
+    /*
+     * The frame starts below the mobile header, so the link sits under the
+     * fixed menu button rather than on top of it. Taller than Thoughtscape's
+     * own buttons, for tapping.
+     */
+    .open-full {
+      min-height: var(--tap);
     }
   }
 </style>

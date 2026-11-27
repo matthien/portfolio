@@ -1,7 +1,6 @@
 ---
 import { site } from '../lib/site';
-import ContactLinks from './ContactLinks.astro';
-import NavLinks from './NavLinks.astro';
+import ContactLinks from './ContactLinks.astro';import NavLinks from './NavLinks.astro';
 
 interface Props {
   pathname: string;
@@ -25,7 +24,9 @@ const { pathname } = Astro.props;
 </button>
 
 <div id="mobile-menu" class="menu" data-menu inert>
-  <p class="t-mobile-header">{site.name}</p>
+  <p class="t-mobile-header">
+    <a class="home-link" href="/" data-menu-link>{site.name}</a>
+  </p>
   <div class="links">
     <NavLinks pathname={pathname} variant="menu" />
   </div>

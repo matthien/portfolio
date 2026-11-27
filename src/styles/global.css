@@ -94,6 +94,28 @@ html.menu-open {
   line-height: var(--leading);
 }
 
+/* Site name linking home: an underline draws in from the left on hover or keyboard focus */
+.home-link {
+  background: linear-gradient(currentColor, currentColor) no-repeat left bottom / 0% 1px;
+  transition: background-size var(--dur-underline) var(--ease-underline);
+}
+
+.home-link:focus-visible {
+  background-size: 100% 1px;
+}
+
+@media (hover: hover) {
+  .home-link:hover {
+    background-size: 100% 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-link {
+    transition: none;
+  }
+}
+
 /* Case study page title: name style on desktop, mobile-case-study-title on mobile */
 .t-page-title {
   font-family: var(--font-sans);

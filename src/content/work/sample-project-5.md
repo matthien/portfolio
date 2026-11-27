@@ -1,7 +1,7 @@
 ---
-title: Rocket Mortgage Notification System
+title: Optimizing a Genius Article
+cover: ../../assets/home/images/genius.png
 tag: Product design
-# cover: ../../assets/sample-project-5.png
 order: 5
 role: "[Your role]"
 timeline: "[Dates]"

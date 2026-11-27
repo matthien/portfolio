@@ -96,8 +96,16 @@
   --dur-hover: 200ms;
   --dur-fade: 200ms;
   --dur-bars: 250ms;
+  --dur-underline: 300ms;
+  --ease-underline: cubic-bezier(0.65, 0, 0.35, 1);
+  /* Starts fast and settles: for things that should react the moment you hover */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-dash: 250ms;
+  --dur-dash-fade: 120ms;
   --hover-lift: -4px;
   --hover-dim: 0.8;
+  /* Soft shadow under a lifted thumbnail */
+  --hover-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
 
   /* Stacking */
   --z-menu: 50;
