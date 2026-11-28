@@ -1,6 +1,6 @@
 ---
 title: Rocket Mortgage Notification System
-cover: ../../assets/home/images/rocket-notifications.png
+cover: ../../assets/home/images/rocketpronotifications.png
 hoverVideo: home/videos/rocketpronotifications.mp4
 tag: Product design
 order: 1

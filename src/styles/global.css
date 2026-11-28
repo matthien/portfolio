@@ -247,3 +247,24 @@ html.menu-open {
   gap: var(--space-4);
   max-width: var(--content-max);
 }
+
+/*
+ * Appear: fade in, rise slightly and come into focus, staggered by --i
+ * (each item's place in reading order). Used on the homepage cards and
+ * the About photos. "backwards" holds the start state during the delay
+ * but lets go once it ends, so hover transforms still work afterwards.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .appear {
+    animation: appear var(--dur-card-enter) var(--ease-out) backwards;
+    animation-delay: calc(var(--i, 0) * var(--card-stagger));
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(var(--card-rise));
+    filter: blur(var(--card-blur));
+  }
+}

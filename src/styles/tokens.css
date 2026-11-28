@@ -101,6 +101,11 @@
   /* Starts fast and settles: for things that should react the moment you hover */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur-dash: 250ms;
+  /* Homepage cards rising and unblurring one after another */
+  --dur-card-enter: 1600ms;
+  --card-stagger: 100ms;
+  --card-rise: 16px;
+  --card-blur: 8px;
   --dur-dash-fade: 120ms;
   --hover-lift: -4px;
   --hover-dim: 0.8;

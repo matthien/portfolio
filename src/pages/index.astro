@@ -23,7 +23,7 @@ const columns = [0, 1].map((column) =>
       columns.map((cards) => (
         <ul class="column" role="list">
           {cards.map(({ entry, index }) => (
-            <li style={`order: ${index}`}>
+            <li class="appear" style={`order: ${index}; --i: ${index}`}>
               <ProjectCard
                 href={`/work/${entry.id}`}
                 title={entry.data.title}

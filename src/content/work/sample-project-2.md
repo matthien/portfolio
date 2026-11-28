@@ -1,6 +1,6 @@
 ---
-title: Rocket Mortgage AI Sales Coach
-cover: ../../assets/home/images/rocket-ai.png
+title: Rocket Pro Navigate
+cover: ../../assets/home/images/rocketpronavigate.png
 hoverVideo: home/videos/rocketpronvigate.mp4
 tag: Product design
 order: 2

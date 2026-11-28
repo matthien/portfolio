@@ -12,13 +12,14 @@ const paragraphs = [
 const placeholderCount = 9;
 
 /*
- * Rendered width of one photo, three to a row:
- * - 1204px and up, beside the text: (100vw - 300 sidebar - 48 padding - 400 text - 96 gap - 2 × 16 grid gaps) / 3
- * - 900px to 1203px, below the text: (100vw - 348 - 2 × 16) / 3
- * - mobile: (100vw - 32 padding - 2 × 8 grid gaps) / 3
+ * Rendered width of one photo:
+ * - above 1440px, three to a row beside the text: (100vw - 300 sidebar - 48 padding - 400 text - 96 gap - 2 × 16 grid gaps) / 3
+ * - 1204px to 1440px, two to a row beside the text: (100vw - 844 - 16) / 2
+ * - 900px to 1203px, two to a row below the text: (100vw - 348 - 16) / 2
+ * - mobile, three to a row: (100vw - 32 padding - 2 × 8 grid gaps) / 3
  */
 const photoSizes =
-  '(width >= 1204px) calc((100vw - 876px) / 3), (width >= 900px) calc((100vw - 380px) / 3), calc((100vw - 48px) / 3)';
+  '(width > 1440px) calc((100vw - 876px) / 3), (width >= 1204px) calc((100vw - 860px) / 2), (width >= 900px) calc((100vw - 364px) / 2), calc((100vw - 48px) / 3)';
 ---
 
 <BaseLayout title="About" description="About Matt Thien, product designer." compactMobileTop>
@@ -49,8 +50,8 @@ const photoSizes =
       {
         photos.length > 0 ? (
           <div class="photos">
-            {photos.map((photo) => (
-              <div class="photo">
+            {photos.map((photo, index) => (
+              <div class="photo appear" style={`--i: ${index}`}>
                 <Image
                   src={photo.src}
                   alt={photo.alt}
@@ -63,8 +64,8 @@ const photoSizes =
           </div>
         ) : (
           <div class="photos" aria-hidden="true">
-            {Array.from({ length: placeholderCount }, () => (
-              <div class="photo" />
+            {Array.from({ length: placeholderCount }, (_, index) => (
+              <div class="photo appear" style={`--i: ${index}`} />
             ))}
           </div>
         )
@@ -128,6 +129,13 @@ const photoSizes =
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-3);
+  }
+
+  /* Laptop widths: two larger photos to a row instead of three small ones */
+  @media (900px <= width <= 1440px) {
+    .photos {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .photo {
